@@ -362,7 +362,7 @@ function handleError(): void {
                 preserveScroll: true,
             }"
             resetOnSuccess
-            class="mx-auto max-w-4xl p-8 bg-white rounded-none sm:rounded-4xl border-t-4 border-b-0 last:border-b-4 sm:border-4 shadow-2xl"
+            class="mx-auto max-w-4xl p-8 bg-white rounded-none sm:rounded-4xl border-gray-200 border-4 shadow-2xl"
         >
             <div class="mb-4 sm:mb-6">
                 <label class="mb-2 block font-semibold text-gray-700 text-sm sm:text-base" for="name">

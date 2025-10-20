@@ -11,7 +11,7 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-    <div class="p-4 lg:p-8 bg-white rounded-none sm:rounded-4xl border-t-4 border-b-0 last:border-b-4 sm:border-4 shadow-2xl sm:transition-transform sm:hover:scale-105">
+    <div class="p-4 lg:p-8 bg-white rounded-none sm:rounded-4xl border-gray-200 border-t-4 border-b-0 last:border-b-4 sm:border-4 shadow-2xl sm:transition-transform sm:hover:scale-105">
         <div class="mb-4 flex items-center">
             <div class="mr-4 size-12 rounded-full bg-gradient-to-br text-white flex items-center justify-center" :class="iconClasses">
                 <component :is="icon" :size="24"  />
