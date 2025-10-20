@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { disable, enable, show } from '@/routes/two-factor';
+//import { disable, enable, show } from '@/routes/two-factor';
 import { BreadcrumbItem } from '@/types';
 import { Form, Head } from '@inertiajs/vue3';
 import { ShieldBan, ShieldCheck } from 'lucide-vue-next';
@@ -39,7 +39,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <!--AppLayout :breadcrumbs="breadcrumbs">
         <Head title="Two-Factor Authentication" />
         <SettingsLayout>
             <div class="space-y-6">
@@ -117,5 +117,5 @@ onUnmounted(() => {
                 />
             </div>
         </SettingsLayout>
-    </AppLayout>
+    </AppLayout-->
 </template>

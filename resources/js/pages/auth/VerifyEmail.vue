@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import EmailVerificationNotificationController from '@/actions/App/Http/Controllers/Auth/EmailVerificationNotificationController';
+//import EmailVerificationNotificationController from '@/actions/App/Http/Controllers/Auth/EmailVerificationNotificationController';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/AuthLayout.vue';
@@ -27,7 +27,7 @@ defineProps<{
             provided during registration.
         </div>
 
-        <Form
+        <!--Form
             v-bind="EmailVerificationNotificationController.store.form()"
             class="space-y-6 text-center"
             v-slot="{ processing }"
@@ -44,6 +44,6 @@ defineProps<{
             >
                 Log out
             </TextLink>
-        </Form>
+        </Form-->
     </AuthLayout>
 </template>

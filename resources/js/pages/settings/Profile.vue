@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import { edit } from '@/routes/profile';
-import { send } from '@/routes/verification';
+//import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
+//import { edit } from '@/routes/profile';
+//import { send } from '@/routes/verification';
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
 
 import DeleteUser from '@/components/DeleteUser.vue';
@@ -21,19 +21,19 @@ interface Props {
 
 defineProps<Props>();
 
-const breadcrumbItems: BreadcrumbItem[] = [
+/*const breadcrumbItems: BreadcrumbItem[] = [
     {
         title: 'Profile settings',
         href: edit().url,
     },
-];
+];*/
 
 const page = usePage();
 const user = page.props.auth.user;
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
+    <!--AppLayout :breadcrumbs="breadcrumbItems">
         <Head title="Profile settings" />
 
         <SettingsLayout>
@@ -124,5 +124,5 @@ const user = page.props.auth.user;
 
             <DeleteUser />
         </SettingsLayout>
-    </AppLayout>
+    </AppLayout-->
 </template>

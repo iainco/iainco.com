@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { dashboard, login, register } from '@/routes';
+//import { dashboard, login, register } from '@/routes';
 import { Head, Link } from '@inertiajs/vue3';
 </script>
 
@@ -14,7 +14,7 @@ import { Head, Link } from '@inertiajs/vue3';
         <header
             class="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl"
         >
-            <nav class="flex items-center justify-end gap-4">
+            <!--nav class="flex items-center justify-end gap-4">
                 <Link
                     v-if="$page.props.auth.user"
                     :href="dashboard()"
@@ -36,7 +36,7 @@ import { Head, Link } from '@inertiajs/vue3';
                         Register
                     </Link>
                 </template>
-            </nav>
+            </nav-->
         </header>
         <div
             class="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0"

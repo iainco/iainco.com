@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PasswordResetLinkController from '@/actions/App/Http/Controllers/Auth/PasswordResetLinkController';
+//import PasswordResetLinkController from '@/actions/App/Http/Controllers/Auth/PasswordResetLinkController';
 import InputError from '@/components/InputError.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
@@ -30,7 +30,7 @@ defineProps<{
         </div>
 
         <div class="space-y-6">
-            <Form
+            <!--Form
                 v-bind="PasswordResetLinkController.store.form()"
                 v-slot="{ errors, processing }"
             >
@@ -60,7 +60,7 @@ defineProps<{
                         Email password reset link
                     </Button>
                 </div>
-            </Form>
+            </Form-->
 
             <div class="space-x-1 text-center text-sm text-muted-foreground">
                 <span>Or, return to</span>
