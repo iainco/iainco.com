@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        {{-- Inline script to detect system dark mode preference and apply it immediately --}}
+        {{-- Inline script to detect system dark mode preference and apply it immediately
         <script>
             (function() {
                 const appearance = '{{ $appearance ?? "system" }}';
@@ -18,8 +18,9 @@
                 }
             })();
         </script>
+        --}}
 
-        {{-- Inline style to set the HTML background color based on our theme in app.css --}}
+        {{-- Inline style to set the HTML background color based on our theme in app.css
         <style>
             html {
                 background-color: oklch(1 0 0);
@@ -29,6 +30,7 @@
                 background-color: oklch(0.145 0 0);
             }
         </style>
+         --}}
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
@@ -37,7 +39,32 @@
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+        <!--link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" /-->
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap');
+
+            .funnel-display {
+                font-family: "Funnel Display", sans-serif;
+                font-optical-sizing: auto;
+                font-weight: 500;
+                font-style: normal;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            @keyframes gradient {
+                0% { background-position: 0 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0 50%; }
+            }
+
+            .gradient-animation {
+                background-size: 300% 300%;
+                animation: gradient 5s ease infinite;
+            }
+        </style>
 
         @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         @inertiaHead
