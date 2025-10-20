@@ -75,7 +75,7 @@ function handleError(): void {
             />
         </div>
 
-        <div class="mb-12 flex flex-col items-center lg:flex-row lg:justify-center lg:space-x-4">
+        <div class="mb-12 flex flex-col items-center space-y-8 lg:space-y-0 lg:flex-row lg:justify-center lg:space-x-4">
             <div class="flex space-x-4 justify-center">
                 <TechIcon name="Laravel">
                     <path
@@ -174,7 +174,7 @@ function handleError(): void {
                     </g>
                 </TechIcon>
             </div>
-            <div class="flex space-x-4 justify-center mt-4 lg:mt-0">
+            <div class="flex space-x-4 justify-center">
                 <TechIcon name="Alpine">
                     <path
                         fill="#77c1d2"
@@ -246,7 +246,7 @@ function handleError(): void {
         </div>
 
         <p class="px-4 mx-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl text-base sm:text-lg md:text-xl text-white text-center">
-            Scottish developer passionate about crafting modern, efficient web applications. I love problem solving, clean code, and diving deep into projects. When I’m not coding, you’ll find me watching F1, running, or spending time with family.
+            Scottish developer passionate about crafting modern, efficient web applications. I love problem solving, clean code, and diving deep into projects. When I’m not coding, you’ll find me watching F1, running, or spending time with my family.
         </p>
     </ScreenSection>
 
@@ -362,7 +362,7 @@ function handleError(): void {
                 preserveScroll: true,
             }"
             resetOnSuccess
-            class="mx-auto max-w-4xl p-8 bg-white rounded-none sm:rounded-4xl border-gray-200 border-4 shadow-2xl"
+            class="mx-auto max-w-4xl p-8 bg-white rounded-none sm:rounded-4xl border-gray-200 border-t-4 border-b-4 sm:border-x-4 shadow-2xl"
         >
             <div class="mb-4 sm:mb-6">
                 <label class="mb-2 block font-semibold text-gray-700 text-sm sm:text-base" for="name">
