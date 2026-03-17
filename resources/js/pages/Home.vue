@@ -7,10 +7,183 @@ import { BicepsFlexed, Briefcase, LoaderPinwheel, PawPrint } from 'lucide-vue-ne
 import { Form } from '@inertiajs/vue3'
 import { Toaster } from '@/components/ui/sonner'
 import { contact } from '@/routes'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { toast } from 'vue-sonner'
 
 import 'vue-sonner/style.css'
-import TechTag from '@/components/TechTag.vue';
+import TechTag from '@/components/TechTag.vue'
+
+const projects = [
+    {
+        icon: BicepsFlexed,
+        iconClasses: ['from-purple-400', 'to-pink-500'],
+        url: 'https://myfitpro.com',
+        name: 'My Fit Pro',
+        description:
+            'Fully featured live-streaming platform for fitness instructors. Customer onboarding, payment processing, class management, automated server provisioning, realtime events via Pusher, mobile app APIs.',
+        tech: [
+            { name: 'Laravel', bgColor: 'bg-red-600', hoverBgColor: 'hover:bg-red-700' },
+            { name: 'Livewire', bgColor: 'bg-sky-500', hoverBgColor: 'hover:bg-sky-600' },
+            { name: 'Vue', bgColor: 'bg-emerald-500', hoverBgColor: 'hover:bg-emerald-600' },
+            { name: 'Alpine', bgColor: 'bg-blue-700', hoverBgColor: 'hover:bg-blue-800' },
+            { name: 'Tailwind', bgColor: 'bg-cyan-400', hoverBgColor: 'hover:bg-cyan-500' },
+        ],
+    },
+    {
+        icon: PawPrint,
+        iconClasses: ['from-green-400', 'to-cyan-500'],
+        name: 'IDTMobile',
+        description:
+            'Integrated diagnostic tool for vets & farmers. Flutter mobile app with Laravel backend, complex reference data management with API versioning, user authorisation and dashboard.',
+        tech: [
+            { name: 'Laravel', bgColor: 'bg-red-600', hoverBgColor: 'hover:bg-red-700' },
+            { name: 'Livewire', bgColor: 'bg-sky-500', hoverBgColor: 'hover:bg-sky-600' },
+            { name: 'Tailwind', bgColor: 'bg-cyan-400', hoverBgColor: 'hover:bg-cyan-500' },
+            { name: 'Flutter', bgColor: 'bg-blue-500', hoverBgColor: 'hover:bg-blue-600' },
+        ],
+    },
+    {
+        icon: Briefcase,
+        iconClasses: ['from-orange-400', 'to-red-500'],
+        name: 'Workways',
+        description:
+            "Side project that helps freelancers automate billing, invoicing, and project specifications. Integrates FreeAgent's API and Discord to reduce admin time and keep workflows moving.",
+        tech: [
+            { name: 'Laravel', bgColor: 'bg-red-600', hoverBgColor: 'hover:bg-red-700' },
+            { name: 'Inertia', bgColor: 'bg-indigo-600', hoverBgColor: 'hover:bg-indigo-700' },
+            { name: 'React', bgColor: 'bg-sky-400', hoverBgColor: 'hover:bg-sky-500' },
+            { name: 'Tailwind', bgColor: 'bg-cyan-400', hoverBgColor: 'hover:bg-cyan-500' },
+        ],
+    },
+]
+
+const testimonials = [
+    {
+        iconClasses: ['from-purple-400', 'to-pink-500'],
+        clientName: 'Alex M.',
+        projectName: 'My Fit Pro',
+        bodyText:
+            'Iain is always great to work with. I’ve worked with him for over 5 years, and our business couldn’t have succeeded without him. Fast and efficient, he turns minimal briefs into production code, solves problems quickly, learns fast, and communicates clearly with detailed notes. One of the best developers I’ve worked with.',
+    },
+    {
+        iconClasses: ['from-orange-400', 'to-red-500'],
+        clientName: 'Harriet A.',
+        projectName: 'Glasgow University',
+        bodyText:
+            'It’s been great working with Iain on our project. He found solutions to all technical challenges and developed an excellent product that delivered exactly what was needed. We especially appreciated his clear communication, thoughtful discussions, and care in ensuring the final product met our expectations.',
+    },
+    {
+        iconClasses: ['from-cyan-400', 'to-blue-500'],
+        clientName: 'Connor F.',
+        projectName: 'Pick Protection',
+        bodyText:
+            'I’ve worked with Iain on more problems than I can count. He’s my go-to for any programming question and always willing to bounce ideas for the best solution. Always available, quick to respond, and great at simplifying complex ideas. His business insight shows in his work, and I’d love to work with him again.',
+    },
+]
+
+const projectIndex = ref(0)
+const testimonialIndex = ref(0)
+const cardsPerView = ref(1)
+const autoCycleMs = 7000
+let projectTimer: number | null = null
+let testimonialTimer: number | null = null
+
+const projectMaxIndex = computed(() => Math.max(0, projects.length - cardsPerView.value))
+const testimonialMaxIndex = computed(() => Math.max(0, testimonials.length - cardsPerView.value))
+const slideStyle = computed(() => ({
+    flex: `0 0 ${100 / cardsPerView.value}%`,
+}))
+const projectPageCount = computed(() => projectMaxIndex.value + 1)
+const testimonialPageCount = computed(() => testimonialMaxIndex.value + 1)
+
+function setProjectIndex(next: number): void {
+    const max = projectMaxIndex.value
+    const span = max + 1
+    const normalized = ((next % span) + span) % span
+    projectIndex.value = normalized
+    resetProjectTimer()
+}
+
+function setTestimonialIndex(next: number): void {
+    const max = testimonialMaxIndex.value
+    const span = max + 1
+    const normalized = ((next % span) + span) % span
+    testimonialIndex.value = normalized
+    resetTestimonialTimer()
+}
+
+function resetProjectTimer(): void {
+    // Auto-cycle temporarily disabled.
+    return
+    if (projectTimer) {
+        window.clearInterval(projectTimer)
+    }
+    if (projectMaxIndex.value > 0) {
+        projectTimer = window.setInterval(() => {
+            setProjectIndex(projectIndex.value + 1)
+        }, autoCycleMs)
+    }
+}
+
+function resetTestimonialTimer(): void {
+    // Auto-cycle temporarily disabled.
+    return
+    if (testimonialTimer) {
+        window.clearInterval(testimonialTimer)
+    }
+    if (testimonialMaxIndex.value > 0) {
+        testimonialTimer = window.setInterval(() => {
+            setTestimonialIndex(testimonialIndex.value + 1)
+        }, autoCycleMs)
+    }
+}
+
+function clearProjectTimer(): void {
+    if (projectTimer) {
+        window.clearInterval(projectTimer)
+        projectTimer = null
+    }
+}
+
+function clearTestimonialTimer(): void {
+    if (testimonialTimer) {
+        window.clearInterval(testimonialTimer)
+        testimonialTimer = null
+    }
+}
+
+function updateCardsPerView(): void {
+    const width = window.innerWidth
+    if (width >= 1024) {
+        cardsPerView.value = 3
+    } else if (width >= 640) {
+        cardsPerView.value = 2
+    } else {
+        cardsPerView.value = 1
+    }
+}
+
+onMounted(() => {
+    updateCardsPerView()
+    window.addEventListener('resize', updateCardsPerView)
+    resetProjectTimer()
+    resetTestimonialTimer()
+})
+
+onBeforeUnmount(() => {
+    clearProjectTimer()
+    clearTestimonialTimer()
+    window.removeEventListener('resize', updateCardsPerView)
+})
+
+watch(cardsPerView, () => {
+    projectIndex.value = Math.min(projectIndex.value, projectMaxIndex.value)
+    testimonialIndex.value = Math.min(testimonialIndex.value, testimonialMaxIndex.value)
+    clearProjectTimer()
+    clearTestimonialTimer()
+    resetProjectTimer()
+    resetTestimonialTimer()
+})
 
 function handleSuccess(): void {
     toast.success('Thank you', {
@@ -31,22 +204,27 @@ function handleError(): void {
     <nav class="fixed top-3 sm:top-6 left-1/2 z-50 -translate-x-1/2 transform rounded-full bg-white/90 px-4 sm:px-8 py-3 sm:py-4 shadow-2xl backdrop-blur-md">
         <ul class="flex space-x-4 sm:space-x-8 text-xs sm:text-sm font-semibold">
             <li>
-                <a href="#hero" class="text-gray-700 transition-colors hover:text-purple-600">
+                <a href="#hero" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
                     Home
                 </a>
             </li>
             <li>
-                <a href="#projects" class="text-gray-700 transition-colors hover:text-purple-600">
+                <a href="#stack" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
+                    Stack
+                </a>
+            </li>
+            <li>
+                <a href="#projects" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
                     Projects
                 </a>
             </li>
             <li>
-                <a href="#testimonials" class="text-gray-700 transition-colors hover:text-purple-600">
+                <a href="#testimonials" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
                     Testimonials
                 </a>
             </li>
             <li>
-                <a href="#contact" class="text-gray-700 transition-colors hover:text-purple-600">
+                <a href="#contact" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
                     Contact
                 </a>
             </li>
@@ -59,21 +237,34 @@ function handleError(): void {
         via="via-pink-500"
         to="to-orange-400"
     >
-        <h1 class="funnel-display pt-16 sm:pt-8 mb-2 sm:mb-4 text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white">
-            iainco
-        </h1>
+        <div class="flex flex-col items-center gap-6 text-center sm:gap-8 lg:gap-10">
+            <h1 class="funnel-display text-3xl font-bold text-white sm:text-4xl md:text-5xl lg:text-6xl">
+                iainco
+            </h1>
 
-        <h2 class="funnel-display mb-4 sm:mb-6 md:mb-8 text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-            Full Stack Developer
-        </h2>
+            <div class="flex justify-center">
+                <img
+                    src="iainco.webp"
+                    class="w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] lg:max-w-[400px] h-auto"
+                    alt="iainco"
+                />
+            </div>
 
-        <div class="mb-6 sm:mb-8 flex justify-center">
-            <img
-                src="iainco.webp"
-                class="w-full max-w-[240px] sm:max-w-[280px] md:[320px] lg:[360px] xl:[400px] lg:max-w-sm xl:max-w-md h-auto"
-                alt="iainco"
-            />
+            <p class="px-4 mx-auto max-w-xs text-base text-white sm:max-w-sm sm:text-lg md:max-w-md md:text-xl lg:max-w-lg xl:max-w-xl">
+                Scottish full stack developer passionate about crafting modern, efficient applications. I love problem solving, clean code, and diving deep into projects. When I’m not coding, you’ll find me spending time with my family, running or watching F1.
+            </p>
         </div>
+    </ScreenSection>
+
+    <ScreenSection
+        id="stack"
+        from="from-cyan-400"
+        via="via-blue-500"
+        to="to-indigo-500"
+    >
+        <h2 class="funnel-display mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+            My Favourite Technologies
+        </h2>
 
         <div class="mb-12 flex flex-col items-center space-y-8 lg:space-y-0 lg:flex-row lg:justify-center lg:space-x-4">
             <div class="flex space-x-4 justify-center">
@@ -244,105 +435,128 @@ function handleError(): void {
                 </TechIcon>
             </div>
         </div>
-
-        <p class="px-4 mx-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl text-base sm:text-lg md:text-xl text-white text-center">
-            Scottish developer passionate about crafting modern, efficient web applications. I love problem solving, clean code, and diving deep into projects. When I’m not coding, you’ll find me watching F1, running, or spending time with my family.
-        </p>
     </ScreenSection>
 
     <ScreenSection
         id="projects"
-        from="from-cyan-400"
-        via="via-blue-500"
-        to="to-indigo-600"
+        from="from-fuchsia-500"
+        via="via-purple-600"
+        to="to-cyan-400"
     >
         <h2 class="funnel-display mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
             Featured Projects
         </h2>
 
-        <div class="mx-auto grid max-w-6xl sm:gap-6 md:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            <ProjectCard
-                :icon="BicepsFlexed"
-                :iconClasses="['from-purple-400', 'to-pink-500']"
-                url="https://myfitpro.com"
-                name="My Fit Pro"
-                description="Fully featured live-streaming platform for fitness instructors. Customer onboarding, payment processing, class management, automated server provisioning, realtime events via Pusher, mobile app APIs."
-            >
-                <template #tech-tags>
-                    <TechTag name="Laravel" bgColor="bg-red-600" hoverBgColor="hover:bg-red-700"/>
-                    <TechTag name="Livewire" bgColor="bg-sky-500" hoverBgColor="hover:bg-sky-600"/>
-                    <TechTag name="Vue" bgColor="bg-emerald-500" hoverBgColor="hover:bg-emerald-600"/>
-                    <TechTag name="Alpine" bgColor="bg-blue-700" hoverBgColor="hover:bg-blue-800"/>
-                    <TechTag name="Tailwind" bgColor="bg-cyan-400" hoverBgColor="hover:bg-cyan-500"/>
-                </template>
-            </ProjectCard>
-
-            <ProjectCard
-                :icon="PawPrint"
-                :iconClasses="['from-green-400', 'to-cyan-500']"
-                name="IDTMobile"
-                description="Integrated diagnostic tool for vets &amp; farmers. Flutter mobile app with Laravel backend, complex reference data management with API versioning, user authorisation and dashboard."
-            >
-                <template #tech-tags>
-                    <TechTag name="Laravel" bgColor="bg-red-600" hoverBgColor="hover:bg-red-700"/>
-                    <TechTag name="Livewire" bgColor="bg-sky-500" hoverBgColor="hover:bg-sky-600"/>
-                    <TechTag name="Tailwind" bgColor="bg-cyan-400" hoverBgColor="hover:bg-cyan-500"/>
-                    <TechTag name="Flutter" bgColor="bg-blue-500" hoverBgColor="hover:bg-blue-600"/>
-                </template>
-            </ProjectCard>
-
-            <ProjectCard
-                :icon="Briefcase"
-                :iconClasses="['from-orange-400', 'to-red-500']"
-                name="Workways"
-                description="My own side project which helps freelancers automate their billing/invoicing flow and generate project specifications. Uses FreeAgent's API and Discord to help save time."
-            >
-                <template #tech-tags>
-                    <TechTag name="Laravel" bgColor="bg-red-600" hoverBgColor="hover:bg-red-700"/>
-                    <TechTag name="Inertia" bgColor="bg-indigo-600" hoverBgColor="hover:bg-indigo-700"/>
-                    <TechTag name="React" bgColor="bg-sky-400" hoverBgColor="hover:bg-sky-500"/>
-                    <TechTag name="Tailwind" bgColor="bg-cyan-400" hoverBgColor="hover:bg-cyan-500"/>
-                </template>
-            </ProjectCard>
+        <div>
+            <div v-if="projectMaxIndex > 0" class="mx-auto mb-6 flex max-w-sm items-center justify-between px-2 text-xs font-semibold text-white/80 sm:max-w-4xl lg:max-w-6xl">
+                <button class="rounded-full bg-white/15 px-3 py-1" type="button" @click="setProjectIndex(projectIndex - 1)">
+                    Prev
+                </button>
+                <div class="flex items-center justify-center gap-2">
+                    <button
+                        v-for="page in projectPageCount"
+                        :key="page"
+                        type="button"
+                        class="h-2 w-2 rounded-full transition"
+                        :class="page - 1 === projectIndex ? 'bg-white' : 'bg-white/40'"
+                        @click="setProjectIndex(page - 1)"
+                    ></button>
+                </div>
+                <button class="rounded-full bg-white/15 px-3 py-1" type="button" @click="setProjectIndex(projectIndex + 1)">
+                    Next
+                </button>
+            </div>
+            <div class="carousel-viewport mx-auto max-w-sm sm:max-w-4xl lg:max-w-6xl">
+                <div
+                    class="carousel-track"
+                    :style="{ transform: `translateX(-${projectIndex * (100 / cardsPerView)}%)` }"
+                >
+                    <div
+                        v-for="project in projects"
+                        :key="project.name"
+                        class="carousel-slide"
+                        :style="slideStyle"
+                    >
+                        <ProjectCard
+                            :icon="project.icon"
+                            :iconClasses="project.iconClasses"
+                            :url="project.url"
+                            :name="project.name"
+                            :description="project.description"
+                        >
+                            <template #tech-tags>
+                                <TechTag
+                                    v-for="tag in project.tech"
+                                    :key="tag.name"
+                                    :name="tag.name"
+                                    :bgColor="tag.bgColor"
+                                    :hoverBgColor="tag.hoverBgColor"
+                                />
+                            </template>
+                        </ProjectCard>
+                    </div>
+                </div>
+            </div>
         </div>
     </ScreenSection>
 
     <ScreenSection
         id="testimonials"
-        from="from-yellow-400"
-        via="via-orange-500"
-        to="to-red-500"
+        from="from-rose-500"
+        via="via-red-500"
+        to="to-yellow-400"
     >
         <h2 class="funnel-display mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
             What Clients Say
         </h2>
 
-        <div class="mx-auto grid max-w-6xl gap-0 sm:gap-6 md:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            <TestimonialCard
-                :iconClasses="['from-purple-400', 'to-pink-500']"
-                clientName="Alex M."
-                projectName="My Fit Pro"
-                bodyText="Iain is always great to work with. I’ve worked with him for over 5 years, and our business couldn’t have succeeded without him. Fast and efficient, he turns minimal briefs into production code, solves problems quickly, learns fast, and communicates clearly with detailed notes. One of the best developers I’ve worked with."/>
-
-            <TestimonialCard
-                :icon-classes="['from-orange-400', 'to-red-500']"
-                clientName="Harriet A."
-                projectName="Glasgow University"
-                bodyText="It’s been great working with Iain on our project. He found solutions to all technical challenges and developed an excellent product that delivered exactly what was needed. We especially appreciated his clear communication, thoughtful discussions, and care in ensuring the final product met our expectations."/>
-
-            <TestimonialCard
-                :iconClasses="['from-cyan-400', 'to-blue-500']"
-                clientName="Connor F."
-                projectName="Pick Protection"
-                bodyText="I’ve worked with Iain on more problems than I can count. He’s my go-to for any programming question and always willing to bounce ideas for the best solution. Always available, quick to respond, and great at simplifying complex ideas. His business insight shows in his work, and I’d love to work with him again."/>
+        <div>
+            <div v-if="testimonialMaxIndex > 0" class="mx-auto mb-6 flex max-w-sm items-center justify-between px-2 text-xs font-semibold text-white/80 sm:max-w-4xl lg:max-w-6xl">
+                <button class="rounded-full bg-white/15 px-3 py-1" type="button" @click="setTestimonialIndex(testimonialIndex - 1)">
+                    Prev
+                </button>
+                <div class="flex items-center justify-center gap-2">
+                    <button
+                        v-for="page in testimonialPageCount"
+                        :key="page"
+                        type="button"
+                        class="h-2 w-2 rounded-full transition"
+                        :class="page - 1 === testimonialIndex ? 'bg-white' : 'bg-white/40'"
+                        @click="setTestimonialIndex(page - 1)"
+                    ></button>
+                </div>
+                <button class="rounded-full bg-white/15 px-3 py-1" type="button" @click="setTestimonialIndex(testimonialIndex + 1)">
+                    Next
+                </button>
+            </div>
+            <div class="carousel-viewport mx-auto max-w-sm sm:max-w-4xl lg:max-w-6xl">
+                <div
+                    class="carousel-track"
+                    :style="{ transform: `translateX(-${testimonialIndex * (100 / cardsPerView)}%)` }"
+                >
+                    <div
+                        v-for="testimonial in testimonials"
+                        :key="testimonial.clientName"
+                        class="carousel-slide"
+                        :style="slideStyle"
+                    >
+                        <TestimonialCard
+                            :iconClasses="testimonial.iconClasses"
+                            :clientName="testimonial.clientName"
+                            :projectName="testimonial.projectName"
+                            :bodyText="testimonial.bodyText"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
     </ScreenSection>
 
     <ScreenSection
         id="contact"
-        from="from-green-400"
-        via="via-teal-500"
-        to="to-blue-600"
+        from="from-lime-400"
+        via="via-emerald-500"
+        to="to-teal-500"
     >
         <h2 class="funnel-display mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
             Let's Build Something Amazing
@@ -436,3 +650,26 @@ function handleError(): void {
         </Form>
     </ScreenSection>
 </template>
+
+<style scoped>
+.carousel-viewport {
+    overflow: hidden;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+.carousel-slide {
+    box-sizing: border-box;
+    padding: 0 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-track {
+        transition-duration: 0.01s;
+    }
+}
+</style>

@@ -8,6 +8,10 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
+Route::get('/next-hack', function () {
+    return Inertia::render('NextHack');
+})->name('next-hack');
+
 Route::post('contact', function () {
     sleep(1);
 

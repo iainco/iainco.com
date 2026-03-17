@@ -70,6 +70,8 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
-        <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "9902393607bb45bdb88b781088c9033c"}'></script>
+        @production
+        <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a7b6035f11ae41ea9745fd0d0cc77c24"}'></script>
+        @endproduction
     </body>
 </html>

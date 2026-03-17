@@ -12,7 +12,7 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-    <div class="p-4 lg:p-8 bg-white rounded-none sm:rounded-4xl border-gray-200 border-t-4 border-b-0 last:border-b-4 sm:border-4 shadow-2xl sm:transition-transform sm:hover:scale-105">
+    <div class="h-full p-5 sm:p-6 lg:p-8 bg-white rounded-4xl border-4 border-gray-200 flex flex-col">
         <div class="mb-4 flex items-center justify-between sm:block">
             <div class="mb-0 sm:mb-4 flex items-center">
                 <div
@@ -37,6 +37,6 @@ const props = defineProps<Props>()
             </div>
         </div>
 
-        <p class="text-sm text-gray-700">{{ props.bodyText }}</p>
+        <p class="text-sm text-gray-700 flex-1">{{ props.bodyText }}</p>
     </div>
 </template>
