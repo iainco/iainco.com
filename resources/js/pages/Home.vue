@@ -84,10 +84,6 @@ const testimonials = [
 const projectIndex = ref(0)
 const testimonialIndex = ref(0)
 const cardsPerView = ref(1)
-const autoCycleMs = 7000
-let projectTimer: number | null = null
-let testimonialTimer: number | null = null
-
 const projectMaxIndex = computed(() => Math.max(0, projects.length - cardsPerView.value))
 const testimonialMaxIndex = computed(() => Math.max(0, testimonials.length - cardsPerView.value))
 const slideStyle = computed(() => ({
@@ -99,57 +95,13 @@ const testimonialPageCount = computed(() => testimonialMaxIndex.value + 1)
 function setProjectIndex(next: number): void {
     const max = projectMaxIndex.value
     const span = max + 1
-    const normalized = ((next % span) + span) % span
-    projectIndex.value = normalized
-    resetProjectTimer()
+    projectIndex.value = ((next % span) + span) % span
 }
 
 function setTestimonialIndex(next: number): void {
     const max = testimonialMaxIndex.value
     const span = max + 1
-    const normalized = ((next % span) + span) % span
-    testimonialIndex.value = normalized
-    resetTestimonialTimer()
-}
-
-function resetProjectTimer(): void {
-    // Auto-cycle temporarily disabled.
-    return
-    if (projectTimer) {
-        window.clearInterval(projectTimer)
-    }
-    if (projectMaxIndex.value > 0) {
-        projectTimer = window.setInterval(() => {
-            setProjectIndex(projectIndex.value + 1)
-        }, autoCycleMs)
-    }
-}
-
-function resetTestimonialTimer(): void {
-    // Auto-cycle temporarily disabled.
-    return
-    if (testimonialTimer) {
-        window.clearInterval(testimonialTimer)
-    }
-    if (testimonialMaxIndex.value > 0) {
-        testimonialTimer = window.setInterval(() => {
-            setTestimonialIndex(testimonialIndex.value + 1)
-        }, autoCycleMs)
-    }
-}
-
-function clearProjectTimer(): void {
-    if (projectTimer) {
-        window.clearInterval(projectTimer)
-        projectTimer = null
-    }
-}
-
-function clearTestimonialTimer(): void {
-    if (testimonialTimer) {
-        window.clearInterval(testimonialTimer)
-        testimonialTimer = null
-    }
+    testimonialIndex.value = ((next % span) + span) % span
 }
 
 function updateCardsPerView(): void {
@@ -166,23 +118,15 @@ function updateCardsPerView(): void {
 onMounted(() => {
     updateCardsPerView()
     window.addEventListener('resize', updateCardsPerView)
-    resetProjectTimer()
-    resetTestimonialTimer()
 })
 
 onBeforeUnmount(() => {
-    clearProjectTimer()
-    clearTestimonialTimer()
     window.removeEventListener('resize', updateCardsPerView)
 })
 
 watch(cardsPerView, () => {
     projectIndex.value = Math.min(projectIndex.value, projectMaxIndex.value)
     testimonialIndex.value = Math.min(testimonialIndex.value, testimonialMaxIndex.value)
-    clearProjectTimer()
-    clearTestimonialTimer()
-    resetProjectTimer()
-    resetTestimonialTimer()
 })
 
 function handleSuccess(): void {
