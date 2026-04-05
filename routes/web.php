@@ -1,6 +1,8 @@
 <?php
 
 use App\Mail\ContactFormMessage;
+use App\Models\CvSection;
+use App\Models\CvTrackingCode;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -11,6 +13,43 @@ Route::get('/', function () {
 Route::get('/next-hack', function () {
     return Inertia::render('NextHack');
 })->name('next-hack');
+
+Route::get('/cv-cover', function () {
+    $ref = request()->query('ref');
+
+    if (!$ref) {
+        abort(404);
+    }
+
+    $url = url('/cv?ref=' . $ref);
+
+    return Inertia::render('CvCover', [
+        'url' => $url,
+    ]);
+})->name('cv-cover');
+
+Route::get('/cv', function () {
+    $ref = request()->query('ref');
+
+    if (!$ref) {
+        abort(404);
+    }
+
+    $trackingCode = CvTrackingCode::where('code', $ref)->first();
+
+    if (!$trackingCode || $trackingCode->isExpired()) {
+        abort(404);
+    }
+
+    $trackingCode->increment('hit_count');
+    $trackingCode->update(['last_hit_at' => now()]);
+
+    $sections = CvSection::orderBy('sort_order')->get();
+
+    return Inertia::render('CV', [
+        'sections' => $sections,
+    ]);
+})->name('cv');
 
 Route::post('contact', function () {
     sleep(1);

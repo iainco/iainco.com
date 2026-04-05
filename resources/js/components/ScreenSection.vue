@@ -4,13 +4,20 @@ interface Props {
     from: string
     via: string
     to: string
+    animated?: boolean
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+    animated: true,
+})
 </script>
 
 <template>
-    <section :id="id" :class="`min-h-screen h-screen flex flex-col justify-center bg-gradient-to-br gradient-animation ${props.from} ${props.via} ${props.to} overflow-hidden`">
+    <section :id="id" :class="[
+        'min-h-screen h-screen flex flex-col justify-center bg-gradient-to-br overflow-hidden',
+        props.from, props.via, props.to,
+        props.animated && 'gradient-animation',
+    ]">
         <div class="px-0 sm:px-6 md:px-8 lg:px-10 xl:px-12">
             <slot></slot>
         </div>
