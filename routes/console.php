@@ -33,4 +33,4 @@ Schedule::call(function () {
             'text' => $text,
             'html' => $html,
         ]);
-})->everyTenMinutes()->name('cv-tracking-hits-notification');
+})->everyFourHours()->name('cv-tracking-hits-notification');

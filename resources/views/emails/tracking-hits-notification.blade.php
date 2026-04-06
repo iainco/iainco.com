@@ -7,7 +7,7 @@ The following tracking codes received hits in the last 4 hours:
 | Code | Entity | Hits | Last Hit |
 |:-----|:-------|-----:|:---------|
 @foreach ($trackingCodes as $tc)
-| {{ $tc->code }} | {{ $tc->entity }} | {{ $tc->hit_count }} | {{ $tc->last_hit_at->format('Y-m-d H:i') }} |
+| {{ $tc->code }} | {{ $tc->entity }} | {{ $tc->hit_count }} | {{ $tc->last_hit_at->format('H:i') }} ({{ $tc->last_hit_at->isToday() ? 'today' : 'yesterday' }}) |
 @endforeach
 </x-mail::table>
 </x-mail::message>
