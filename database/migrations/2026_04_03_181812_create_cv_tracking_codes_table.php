@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('cv_tracking_codes', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 4)->unique();
+            $table->string('code', 5)->unique();
             $table->string('entity');
             $table->timestamp('expires_at');
             $table->unsignedInteger('hit_count')->default(0);
