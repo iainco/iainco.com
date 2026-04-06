@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\CvTrackingCode;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 class CvCodeCommand extends Command
 {
