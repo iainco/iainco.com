@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\CvTrackingCode;
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 
 class CvCodeCommand extends Command
 {
@@ -48,7 +47,6 @@ class CvCodeCommand extends Command
         $this->line("  Code:    {$trackingCode->code}");
         $this->line("  Expires: {$trackingCode->expires_at->format('Y-m-d H:i')}");
         $this->newLine();
-        $this->info("URL: /{$trackingCode->code}");
 
         return 0;
     }
