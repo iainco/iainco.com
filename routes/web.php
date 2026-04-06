@@ -67,8 +67,8 @@ Route::post('contact', function () {
     Http::withBasicAuth('api', config('services.mailgun.api_key'))
         ->asForm()
         ->post("https://api.mailgun.net/v3/{$domain}/messages", [
-            'from' => 'no-reply@iainco.com <mailgun@' . $domain . '>',
-            'to' => 'iain@appinica.com',
+            'from' => 'Mailgun Sandbox <postmaster@' . $domain . '>',
+            'to' => 'Iain Collins <iain@appinica.com>',
             'subject' => 'iainco.com Contact Form Message',
             'text' => $text,
             'html' => $html,
