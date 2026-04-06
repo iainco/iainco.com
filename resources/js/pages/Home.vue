@@ -735,7 +735,7 @@ function handleError(): void {
                 </div>
 
                 <div class="flex items-center justify-end space-x-2">
-                    <LoaderPinwheel v-if="processing" class="text-pink-5make 00 animate-spin w-5 h-5 sm:w-6 sm:h-6"/>
+                    <LoaderPinwheel v-if="processing" class="text-pink-500 animate-spin w-5 h-5 sm:w-6 sm:h-6"/>
 
                     <div class="inline-flex rounded-full gradient-animation p-[2px]" :style="pageGradient">
                         <button
