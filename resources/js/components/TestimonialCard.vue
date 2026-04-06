@@ -29,11 +29,11 @@ const props = defineProps<Props>()
             </div>
 
             <div class="mb-4 flex">
-                <Star class="text-yellow-400"/>
-                <Star class="text-yellow-400"/>
-                <Star class="text-yellow-400"/>
-                <Star class="text-yellow-400"/>
-                <Star class="text-yellow-400"/>
+                <Star class="fill-yellow-300 text-yellow-300"/>
+                <Star class="fill-yellow-300 text-yellow-300"/>
+                <Star class="fill-yellow-300 text-yellow-300"/>
+                <Star class="fill-yellow-300 text-yellow-300"/>
+                <Star class="fill-yellow-300 text-yellow-300"/>
             </div>
         </div>
 

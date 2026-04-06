@@ -1,16 +1,49 @@
 <?php
 
 use App\Mail\ContactFormMessage;
+use App\Models\CvSection;
+use App\Models\CvTrackingCode;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
+Route::get('/cv-cover/{code}', function (string $code) {
+    $trackingCode = CvTrackingCode::where('code', $code)->first();
 
-Route::get('/next-hack', function () {
-    return Inertia::render('NextHack');
-})->name('next-hack');
+    if (!$trackingCode || $trackingCode->isExpired()) {
+        abort(404);
+    }
+
+    return Inertia::render('CvCover', [
+        'url' => url("/{$code}"),
+    ]);
+})->name('cv-cover');
+
+Route::get('/cover-letter', function () {
+    return Inertia::render('CoverLetter');
+})->name('cover-letter');
+
+Route::get('/{code?}', function (?string $code = null) {
+    $workExperience = null;
+
+    if ($code) {
+        $trackingCode = CvTrackingCode::where('code', $code)->first();
+
+        if (!$trackingCode || $trackingCode->isExpired()) {
+            abort(404);
+        }
+
+        $trackingCode->increment('hit_count');
+        $trackingCode->update(['last_hit_at' => now()]);
+
+        $workExperience = CvSection::where('key', 'experience')->first();
+        $contactDetails = CvSection::where('key', 'contact_details')->first();
+    }
+
+    return Inertia::render('Home', [
+        'workExperience' => $workExperience,
+        'contactDetails' => $contactDetails ?? null,
+    ]);
+})->name('home');
 
 Route::post('contact', function () {
     sleep(1);
@@ -43,12 +76,3 @@ Route::post('contact', function () {
 
     return back();
 })->name('contact');
-
-/*
-Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
-*/
