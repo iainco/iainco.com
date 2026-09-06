@@ -22,6 +22,20 @@ Route::get('/cover-letter', function () {
     return Inertia::render('CoverLetter');
 })->name('cover-letter');
 
+Route::get('/cv-pdf', function () {
+    $workExperience = CvSection::where('key', 'experience')->first();
+    $contactDetails = CvSection::where('key', 'contact')->first();
+
+    if (!$workExperience) {
+        abort(404);
+    }
+
+    return Inertia::render('CvPdf', [
+        'workExperience' => $workExperience,
+        'contactDetails' => $contactDetails,
+    ]);
+})->name('cv-pdf');
+
 Route::get('/{code?}', function (?string $code = null) {
     $workExperience = null;
 
