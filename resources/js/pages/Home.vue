@@ -229,8 +229,8 @@ function handleError(): void {
     <Toaster richColors/>
 
     <div class="gradient-animation" :style="pageGradient">
-        <nav class="fixed top-3 sm:top-6 left-1/2 z-50 -translate-x-1/2 transform rounded-full bg-white/90 px-4 sm:px-8 py-3 sm:py-4 shadow-2xl backdrop-blur-md">
-            <ul class="flex space-x-4 sm:space-x-8 text-xs sm:text-sm font-semibold">
+        <nav class="fixed top-3 sm:top-6 left-1/2 z-50 -translate-x-1/2 transform rounded-full bg-white/90 px-3 sm:px-8 py-3 sm:py-4 shadow-2xl backdrop-blur-md">
+            <ul class="flex space-x-3 sm:space-x-8 text-[11px] sm:text-sm font-semibold">
                 <li>
                     <a href="#home" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
                         Home
