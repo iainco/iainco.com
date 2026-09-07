@@ -22,7 +22,13 @@ Route::get('/cover-letter', function () {
     return Inertia::render('CoverLetter');
 })->name('cover-letter');
 
-Route::get('/cv-pdf', function () {
+Route::get('/cv-pdf/{code}', function (string $code) {
+    $trackingCode = CvTrackingCode::where('code', $code)->first();
+
+    if (!$trackingCode || $trackingCode->isExpired()) {
+        abort(404);
+    }
+
     $workExperience = CvSection::where('key', 'experience')->first();
     $contactDetails = CvSection::where('key', 'contact')->first();
 
