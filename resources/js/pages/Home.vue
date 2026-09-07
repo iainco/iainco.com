@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ProductCard from '@/components/ProductCard.vue'
 import ProjectCard from '@/components/ProjectCard.vue'
 import ScreenSection from '@/components/ScreenSection.vue'
 import TechIcon from '@/components/TechIcon.vue'
@@ -115,6 +116,30 @@ const projects = [
     },
 ]
 
+const products = [
+    {
+        name: 'GridTrip',
+        tagline: 'Plan your entire F1 race weekend in one place',
+        url: 'https://gridtrip.co',
+        image: '/products/gridtrip.webp',
+        status: 'live' as const,
+        role: 'Founder & sole developer',
+        description:
+            'Pick a Grand Prix and GridTrip lines up real tickets, flights and hotels around it, with grandstand guides and race-day transit tips, so the whole weekend is planned in minutes instead of across ten browser tabs.',
+        highlights: [
+            'Real ticket inventory from official promoters and established resellers, with honest prices',
+            'Grandstand guides covering what you will see, whether it is covered and if there is a screen',
+            'Shareable group plans with per-person costs, plus email alerts when tickets go on sale',
+        ],
+        tech: [
+            { name: 'Laravel', bgColor: 'bg-red-600', hoverBgColor: 'hover:bg-red-700' },
+            { name: 'Inertia', bgColor: 'bg-indigo-600', hoverBgColor: 'hover:bg-indigo-700' },
+            { name: 'React', bgColor: 'bg-sky-400', hoverBgColor: 'hover:bg-sky-500' },
+            { name: 'Tailwind', bgColor: 'bg-cyan-400', hoverBgColor: 'hover:bg-cyan-500' },
+        ],
+    },
+]
+
 const testimonials = [
     {
         iconClasses: ['from-purple-400', 'to-pink-500'],
@@ -227,6 +252,11 @@ function handleError(): void {
                 <li>
                     <a href="#projects" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
                         Projects
+                    </a>
+                </li>
+                <li>
+                    <a href="#products" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
+                        Products
                     </a>
                 </li>
                 <li>
@@ -581,6 +611,42 @@ function handleError(): void {
                         </div>
                     </div>
                 </div>
+            </div>
+        </ScreenSection>
+
+        <ScreenSection id="products" grow>
+            <h2 class="funnel-display mb-3 sm:mb-4 text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+                Products I've Built
+            </h2>
+
+            <p class="mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl px-4 text-center text-sm text-white/80 sm:text-base md:text-lg">
+                Designed, built, launched and run by me, end to end.
+            </p>
+
+            <div class="mx-auto max-w-sm space-y-6 px-2 sm:max-w-4xl lg:max-w-6xl">
+                <ProductCard
+                    v-for="product in products"
+                    :key="product.name"
+                    :name="product.name"
+                    :tagline="product.tagline"
+                    :description="product.description"
+                    :url="product.url"
+                    :image="product.image"
+                    :status="product.status"
+                    :role="product.role"
+                    :highlights="product.highlights"
+                    :ctaStyle="pageGradient"
+                >
+                    <template #tech-tags>
+                        <TechTag
+                            v-for="tag in product.tech"
+                            :key="tag.name"
+                            :name="tag.name"
+                            :bgColor="tag.bgColor"
+                            :hoverBgColor="tag.hoverBgColor"
+                        />
+                    </template>
+                </ProductCard>
             </div>
         </ScreenSection>
 
