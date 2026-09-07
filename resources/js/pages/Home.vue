@@ -5,7 +5,7 @@ import ScreenSection from '@/components/ScreenSection.vue'
 import TechIcon from '@/components/TechIcon.vue'
 import TechTag from '@/components/TechTag.vue'
 import TestimonialCard from '@/components/TestimonialCard.vue'
-import { BicepsFlexed, Briefcase, Building2, Calendar, ChevronDown, FolderOpen, LoaderPinwheel, Mail, PawPrint, Phone } from 'lucide-vue-next'
+import { Award, BicepsFlexed, Briefcase, Building2, Calendar, ChevronDown, FolderOpen, GraduationCap, LoaderPinwheel, Mail, PawPrint, Phone } from 'lucide-vue-next'
 import { Form } from '@inertiajs/vue3'
 import { Toaster } from '@/components/ui/sonner'
 import { contact } from '@/routes'
@@ -47,9 +47,23 @@ interface ContactDetails {
     }
 }
 
+interface Education {
+    title: string
+    content: {
+        qualifications: {
+            institution: string
+            degree: string
+            award?: string
+            period: string
+            logo?: string
+        }[]
+    }
+}
+
 const props = defineProps<{
     workExperience?: WorkExperience | null
     contactDetails?: ContactDetails | null
+    education?: Education | null
 }>()
 
 const pageGradient = computed(() => ({
@@ -492,6 +506,10 @@ function handleError(): void {
                 :ref="workExpRef"
                 class="mx-auto max-h-[calc(100vh-24rem)] max-w-4xl space-y-6 overflow-y-auto px-4"
             >
+                <h2 class="funnel-display text-center text-xl font-bold text-white sm:text-2xl md:text-3xl">
+                    Work
+                </h2>
+
                 <div
                     v-for="(employer, i) in workExperience.content.employers"
                     :key="i"
@@ -558,6 +576,49 @@ function handleError(): void {
                         </div>
                     </div>
                 </div>
+
+                <template v-if="education?.content.qualifications?.length">
+                    <h2 class="funnel-display pt-4 text-center text-xl font-bold text-white sm:text-2xl md:text-3xl">
+                        {{ education.title }}
+                    </h2>
+
+                    <div
+                        v-for="(qualification, i) in education.content.qualifications"
+                        :key="'qualification-' + i"
+                        class="rounded-2xl bg-white/10 p-6 backdrop-blur-sm sm:p-8"
+                    >
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl"
+                                :class="qualification.logo ? 'bg-white p-1.5' : 'bg-white/15'"
+                            >
+                                <img
+                                    v-if="qualification.logo"
+                                    :src="qualification.logo"
+                                    :alt="qualification.institution + ' logo'"
+                                    class="h-full w-full object-contain"
+                                />
+                                <GraduationCap v-else class="h-6 w-6 text-white" />
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="funnel-display text-lg font-bold text-white sm:text-xl">
+                                    {{ qualification.institution }}
+                                </h3>
+                                <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-white/70">
+                                    <span class="font-medium text-white/90">{{ qualification.degree }}</span>
+                                    <span v-if="qualification.award" class="flex items-center gap-1">
+                                        <Award class="h-3.5 w-3.5" />
+                                        {{ qualification.award }}
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <Calendar class="h-3.5 w-3.5" />
+                                        {{ qualification.period }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
             </div>
             <div class="mt-4 flex justify-center">
                 <ChevronDown

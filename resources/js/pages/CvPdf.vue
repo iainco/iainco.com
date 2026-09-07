@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import {
+    Award,
     Building2,
     Calendar,
     FolderOpen,
+    GraduationCap,
     Mail,
     MapPin,
     Phone,
@@ -37,9 +39,25 @@ interface ContactDetails {
     };
 }
 
+interface Qualification {
+    institution: string;
+    degree: string;
+    award?: string;
+    period: string;
+    logo?: string;
+}
+
+interface Education {
+    title: string;
+    content: {
+        qualifications: Qualification[];
+    };
+}
+
 const props = defineProps<{
     workExperience: WorkExperience;
     contactDetails?: ContactDetails | null;
+    education?: Education | null;
 }>();
 
 const palette = ['#a855f7', '#ec4899', '#f97316'];
@@ -85,6 +103,12 @@ const stack = [
 ];
 
 const employers = computed(() => props.workExperience.content.employers ?? []);
+
+const qualifications = computed(
+    () => props.education?.content.qualifications ?? [],
+);
+
+const educationTitle = computed(() => props.education?.title || 'Education');
 </script>
 
 <template>
@@ -281,6 +305,76 @@ const employers = computed(() => props.workExperience.content.employers ?? []);
                         </div>
                     </article>
                 </div>
+
+                <!-- Education heading -->
+                <template v-if="qualifications.length">
+                    <h2
+                        class="funnel-display mt-5 text-xl font-bold text-pink-500"
+                    >
+                        {{ educationTitle }}
+                    </h2>
+
+                    <!-- Qualifications -->
+                    <div class="mt-3 space-y-3">
+                        <article
+                            v-for="(qualification, i) in qualifications"
+                            :key="'qualification-' + i"
+                            class="employer rounded-xl border border-pink-100 bg-pink-50/40 p-4"
+                        >
+                            <div class="flex items-start gap-3">
+                                <div
+                                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg"
+                                    :class="
+                                        qualification.logo
+                                            ? 'bg-white p-1'
+                                            : 'bg-pink-100'
+                                    "
+                                >
+                                    <img
+                                        v-if="qualification.logo"
+                                        :src="qualification.logo"
+                                        :alt="
+                                            qualification.institution + ' logo'
+                                        "
+                                        class="h-full w-full object-contain"
+                                    />
+                                    <GraduationCap
+                                        v-else
+                                        class="h-4 w-4 text-pink-500"
+                                    />
+                                </div>
+                                <div class="flex-1">
+                                    <h3
+                                        class="funnel-display text-base font-bold text-gray-900"
+                                    >
+                                        {{ qualification.institution }}
+                                    </h3>
+                                    <div
+                                        class="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11.5px] text-gray-600"
+                                    >
+                                        <span
+                                            class="font-semibold text-gray-800"
+                                            >{{ qualification.degree }}</span
+                                        >
+                                        <span
+                                            v-if="qualification.award"
+                                            class="inline-flex items-center gap-1"
+                                        >
+                                            <Award class="h-3 w-3" />
+                                            {{ qualification.award }}
+                                        </span>
+                                        <span
+                                            class="inline-flex items-center gap-1"
+                                        >
+                                            <Calendar class="h-3 w-3" />
+                                            {{ qualification.period }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </template>
             </div>
         </div>
     </div>

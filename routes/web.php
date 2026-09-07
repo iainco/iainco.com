@@ -31,6 +31,7 @@ Route::get('/cv-pdf/{code}', function (string $code) {
 
     $workExperience = CvSection::where('key', 'experience')->first();
     $contactDetails = CvSection::where('key', 'contact')->first();
+    $education = CvSection::where('key', 'education')->first();
 
     if (!$workExperience) {
         abort(404);
@@ -39,11 +40,13 @@ Route::get('/cv-pdf/{code}', function (string $code) {
     return Inertia::render('CvPdf', [
         'workExperience' => $workExperience,
         'contactDetails' => $contactDetails,
+        'education' => $education,
     ]);
 })->name('cv-pdf');
 
 Route::get('/{code?}', function (?string $code = null) {
     $workExperience = null;
+    $education = null;
 
     if ($code) {
         $trackingCode = CvTrackingCode::where('code', $code)->first();
@@ -57,11 +60,13 @@ Route::get('/{code?}', function (?string $code = null) {
 
         $workExperience = CvSection::where('key', 'experience')->first();
         $contactDetails = CvSection::where('key', 'contact')->first();
+        $education = CvSection::where('key', 'education')->first();
     }
 
     return Inertia::render('Home', [
         'workExperience' => $workExperience,
         'contactDetails' => $contactDetails ?? null,
+        'education' => $education,
     ]);
 })->name('home');
 
