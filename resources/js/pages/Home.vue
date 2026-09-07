@@ -4,7 +4,7 @@ import ScreenSection from '@/components/ScreenSection.vue'
 import TechIcon from '@/components/TechIcon.vue'
 import TechTag from '@/components/TechTag.vue'
 import TestimonialCard from '@/components/TestimonialCard.vue'
-import { BicepsFlexed, Briefcase, Building2, Calendar, ChevronDown, FolderOpen, LoaderPinwheel, Mail, PawPrint, Phone } from 'lucide-vue-next'
+import { BicepsFlexed, Building2, Calendar, ChevronDown, FolderOpen, LoaderPinwheel, Mail, PawPrint, Phone } from 'lucide-vue-next'
 import { Form } from '@inertiajs/vue3'
 import { Toaster } from '@/components/ui/sonner'
 import { contact } from '@/routes'
@@ -111,19 +111,6 @@ const projects = [
             { name: 'Livewire', bgColor: 'bg-sky-500', hoverBgColor: 'hover:bg-sky-600' },
             { name: 'Tailwind', bgColor: 'bg-cyan-400', hoverBgColor: 'hover:bg-cyan-500' },
             { name: 'Flutter', bgColor: 'bg-blue-500', hoverBgColor: 'hover:bg-blue-600' },
-        ],
-    },
-    {
-        icon: Briefcase,
-        iconClasses: ['from-orange-400', 'to-red-500'],
-        name: 'Workways',
-        description:
-            "Side project that helps freelancers automate billing, invoicing, and project specifications. Integrates FreeAgent's API and Discord to reduce admin time and keep workflows moving.",
-        tech: [
-            { name: 'Laravel', bgColor: 'bg-red-600', hoverBgColor: 'hover:bg-red-700' },
-            { name: 'Inertia', bgColor: 'bg-indigo-600', hoverBgColor: 'hover:bg-indigo-700' },
-            { name: 'React', bgColor: 'bg-sky-400', hoverBgColor: 'hover:bg-sky-500' },
-            { name: 'Tailwind', bgColor: 'bg-cyan-400', hoverBgColor: 'hover:bg-cyan-500' },
         ],
     },
 ]
@@ -565,6 +552,7 @@ function handleError(): void {
                 <div class="carousel-viewport mx-auto max-w-sm sm:max-w-4xl lg:max-w-6xl">
                     <div
                         class="carousel-track"
+                        :class="{ 'justify-center': projectMaxIndex === 0 }"
                         :style="{ transform: `translateX(-${projectIndex * (100 / cardsPerView)}%)` }"
                     >
                         <div
@@ -623,6 +611,7 @@ function handleError(): void {
                 <div class="carousel-viewport mx-auto max-w-sm sm:max-w-4xl lg:max-w-6xl">
                     <div
                         class="carousel-track"
+                        :class="{ 'justify-center': testimonialMaxIndex === 0 }"
                         :style="{ transform: `translateX(-${testimonialIndex * (100 / cardsPerView)}%)` }"
                     >
                         <div
