@@ -4,6 +4,7 @@ import {
     Building2,
     Calendar,
     FolderOpen,
+    Globe,
     GraduationCap,
     Mail,
     MapPin,
@@ -148,6 +149,13 @@ const educationTitle = computed(() => props.education?.title || 'Education');
                         v-if="contactDetails"
                         class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-[12px]"
                     >
+                        <a
+                            href="https://iainco.com"
+                            class="inline-flex items-center gap-1.5 rounded-full bg-pink-50 px-3 py-1 font-medium text-pink-600"
+                        >
+                            <Globe class="h-3.5 w-3.5" />
+                            iainco.com
+                        </a>
                         <a
                             v-if="contactDetails.content.email"
                             :href="'mailto:' + contactDetails.content.email"
