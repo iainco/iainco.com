@@ -210,6 +210,63 @@ const displayUrl = (url: string) =>
                     </div>
                 </div>
 
+                <!-- How I work -->
+                <div
+                    class="mt-3 flex items-start gap-3 rounded-xl border border-pink-100 bg-pink-50/40 p-3"
+                >
+                    <div
+                        class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg"
+                        style="background-color: #d97757"
+                    >
+                        <svg
+                            class="h-5 w-5"
+                            viewBox="0 0 128 128"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M34 40 62 64 34 88"
+                                fill="none"
+                                stroke="#fff"
+                                stroke-width="12"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                            <path
+                                d="M68 90h28"
+                                fill="none"
+                                stroke="#fff"
+                                stroke-width="12"
+                                stroke-linecap="round"
+                            />
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex flex-wrap items-baseline gap-x-2">
+                            <h3
+                                class="funnel-display text-[12.5px] font-semibold text-gray-900"
+                            >
+                                How I work
+                            </h3>
+                            <span class="text-[10.5px] text-gray-500"
+                                >Claude Code, used daily</span
+                            >
+                        </div>
+                        <p
+                            class="mt-0.5 text-[11px] leading-snug text-gray-700"
+                        >
+                            Claude Code does most of the implementation. I set
+                            the architecture, break the work into well-specified
+                            pieces, drive it feature by feature, review every
+                            diff and own the tests, the deploys and the outcome.
+                            It's how I built and launched GridTrip solo, and how
+                            I'm shipping Lock In in Swift, a language I wouldn't
+                            have taken on unaided. Laravel and Vue are still
+                            home; the tooling just means what I'll deliver goes
+                            well beyond the stack list above.
+                        </p>
+                    </div>
+                </div>
+
                 <!-- Experience heading -->
                 <h2 class="funnel-display mt-5 text-xl font-bold text-pink-500">
                     Experience
