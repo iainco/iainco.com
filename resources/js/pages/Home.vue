@@ -9,6 +9,7 @@ import { Award, BicepsFlexed, Briefcase, Building2, Calendar, ChevronDown, Folde
 import { Form } from '@inertiajs/vue3'
 import { Toaster } from '@/components/ui/sonner'
 import { contact } from '@/routes'
+import { products } from '@/data/products'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { toast } from 'vue-sonner'
 import 'vue-sonner/style.css'
@@ -134,30 +135,6 @@ const projects = [
         name: 'Workways',
         description:
             "Side project that helps freelancers automate billing, invoicing, and project specifications. Integrates FreeAgent's API and Discord to reduce admin time and keep workflows moving.",
-        tech: [
-            { name: 'Laravel', bgColor: 'bg-red-600', hoverBgColor: 'hover:bg-red-700' },
-            { name: 'Inertia', bgColor: 'bg-indigo-600', hoverBgColor: 'hover:bg-indigo-700' },
-            { name: 'React', bgColor: 'bg-sky-400', hoverBgColor: 'hover:bg-sky-500' },
-            { name: 'Tailwind', bgColor: 'bg-cyan-400', hoverBgColor: 'hover:bg-cyan-500' },
-        ],
-    },
-]
-
-const products = [
-    {
-        name: 'GridTrip',
-        tagline: 'Plan your entire F1 race weekend in one place',
-        url: 'https://gridtrip.co',
-        image: '/products/gridtrip.webp',
-        status: 'live' as const,
-        role: 'Founder & sole developer',
-        description:
-            'Pick a Grand Prix and GridTrip lines up real tickets, flights and hotels around it, with grandstand guides and race-day transit tips, so the whole weekend is planned in minutes instead of across ten browser tabs.',
-        highlights: [
-            'Real ticket inventory from official promoters and established resellers, with honest prices',
-            'Grandstand guides covering what you will see, whether it is covered and if there is a screen',
-            'Shareable group plans with per-person costs, plus email alerts when tickets go on sale',
-        ],
         tech: [
             { name: 'Laravel', bgColor: 'bg-red-600', hoverBgColor: 'hover:bg-red-700' },
             { name: 'Inertia', bgColor: 'bg-indigo-600', hoverBgColor: 'hover:bg-indigo-700' },
@@ -694,7 +671,7 @@ function handleError(): void {
             </h2>
 
             <p class="mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl px-4 text-center text-sm text-white/80 sm:text-base md:text-lg">
-                Designed, built, launched and run by me, end to end.
+                Designed and built by me, end to end. One live, one on the way.
             </p>
 
             <div class="mx-auto max-w-sm space-y-6 px-2 sm:max-w-4xl lg:max-w-6xl">

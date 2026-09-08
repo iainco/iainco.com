@@ -6,7 +6,7 @@ interface Props {
     name: string
     tagline: string
     description: string
-    image: string
+    image?: string
     status: 'live' | 'in-progress'
     url?: string
     role?: string
@@ -35,11 +35,23 @@ const displayUrl = computed(() =>
             class="group flex flex-shrink-0 items-center bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 p-4 sm:p-6 lg:w-1/2"
         >
             <img
+                v-if="props.image"
                 :src="props.image"
                 :alt="`Screenshot of ${props.name}`"
                 class="w-full rounded-xl shadow-lg ring-1 ring-black/5 transition-transform duration-500 group-hover:scale-[1.02]"
                 loading="lazy"
             />
+            <div
+                v-else
+                class="flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-white/90 bg-white/50 px-6 py-12 text-center sm:py-16"
+            >
+                <span class="funnel-display text-3xl font-bold text-gray-800 sm:text-4xl">
+                    {{ props.name }}
+                </span>
+                <span class="text-sm font-medium text-gray-500">
+                    Screenshots coming soon
+                </span>
+            </div>
         </component>
 
         <div class="flex flex-1 flex-col p-5 sm:p-6 lg:p-8">

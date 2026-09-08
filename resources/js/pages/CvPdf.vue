@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { products } from '@/data/products';
 import {
     Award,
     Building2,
@@ -9,6 +10,7 @@ import {
     Mail,
     MapPin,
     Phone,
+    Rocket,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 
@@ -110,6 +112,9 @@ const qualifications = computed(
 );
 
 const educationTitle = computed(() => props.education?.title || 'Education');
+
+const displayUrl = (url: string) =>
+    url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 </script>
 
 <template>
@@ -308,6 +313,97 @@ const educationTitle = computed(() => props.education?.title || 'Education');
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Products heading -->
+                <h2 class="funnel-display mt-5 text-xl font-bold text-pink-500">
+                    Products
+                </h2>
+
+                <!-- Products -->
+                <div class="mt-3 space-y-3">
+                    <article
+                        v-for="product in products"
+                        :key="product.name"
+                        class="employer rounded-xl border border-pink-100 bg-pink-50/40 p-4"
+                    >
+                        <div class="flex items-start gap-3">
+                            <div
+                                class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-pink-100"
+                            >
+                                <Rocket class="h-4 w-4 text-pink-500" />
+                            </div>
+                            <div class="flex-1">
+                                <div
+                                    class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5"
+                                >
+                                    <h3
+                                        class="funnel-display text-base font-bold text-gray-900"
+                                    >
+                                        {{ product.name }}
+                                    </h3>
+                                    <span
+                                        v-if="product.status === 'in-progress'"
+                                        class="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700"
+                                    >
+                                        In development
+                                    </span>
+                                </div>
+                                <div
+                                    class="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11.5px] text-gray-600"
+                                >
+                                    <span class="font-semibold text-gray-800">{{
+                                        product.role
+                                    }}</span>
+                                    <span
+                                        v-if="product.period"
+                                        class="inline-flex items-center gap-1"
+                                    >
+                                        <Calendar class="h-3 w-3" />
+                                        {{ product.period }}
+                                    </span>
+                                    <a
+                                        v-if="product.url"
+                                        :href="product.url"
+                                        class="inline-flex items-center gap-1"
+                                    >
+                                        <Globe class="h-3 w-3" />
+                                        {{ displayUrl(product.url) }}
+                                    </a>
+                                </div>
+                                <p
+                                    class="mt-2 text-[11.5px] leading-relaxed text-gray-700"
+                                >
+                                    {{ product.cv.description }}
+                                </p>
+                                <ul
+                                    v-if="product.cv.bullets.length"
+                                    class="mt-1.5 space-y-1"
+                                >
+                                    <li
+                                        v-for="(bullet, k) in product.cv
+                                            .bullets"
+                                        :key="k"
+                                        class="flex items-start gap-1.5 text-[11px] leading-snug text-gray-700"
+                                    >
+                                        <span
+                                            class="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-pink-400"
+                                        ></span>
+                                        {{ bullet }}
+                                    </li>
+                                </ul>
+                                <div class="mt-2 flex flex-wrap gap-1">
+                                    <span
+                                        v-for="tag in product.tech"
+                                        :key="tag.name"
+                                        class="rounded-full border border-pink-100 bg-white px-2 py-0.5 text-[10px] font-semibold text-gray-700"
+                                    >
+                                        {{ tag.name }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
