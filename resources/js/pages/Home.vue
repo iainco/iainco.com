@@ -317,7 +317,7 @@ function handleError(): void {
                 </div>
 
                 <p class="px-4 mx-auto max-w-xs text-base text-white sm:max-w-sm sm:text-lg md:max-w-md md:text-xl lg:max-w-lg xl:max-w-xl">
-                    Scottish full stack developer passionate about crafting modern, efficient applications. I love problem solving, clean code, and diving deep into projects. When I’m not coding, you’ll find me spending time with my family, running or watching F1.
+                    Scottish full stack developer passionate about crafting modern, efficient applications. These days I build with Claude Code alongside me, which lets me ship faster and reach beyond my core stack without lowering the bar on quality. When I'm not coding, you'll find me spending time with my family, running or watching F1.
                 </p>
             </div>
         </ScreenSection>

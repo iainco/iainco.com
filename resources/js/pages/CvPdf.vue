@@ -144,10 +144,11 @@ const displayUrl = (url: string) =>
                 <div class="pt-6">
                     <p class="text-[13px] leading-relaxed text-gray-700">
                         Scottish full stack developer passionate about crafting
-                        modern, efficient applications. I love problem solving,
-                        clean code, and diving deep into projects. When I'm not
-                        coding, you'll find me spending time with my family,
-                        running or watching F1.
+                        modern, efficient applications. These days I build end
+                        to end with Claude Code, which lets me ship faster and
+                        reach beyond my core stack without dropping the bar on
+                        quality. When I'm not coding, you'll find me spending
+                        time with my family, running or watching F1.
                     </p>
 
                     <div
