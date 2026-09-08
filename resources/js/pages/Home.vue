@@ -5,10 +5,11 @@ import ScreenSection from '@/components/ScreenSection.vue'
 import TechIcon from '@/components/TechIcon.vue'
 import TechTag from '@/components/TechTag.vue'
 import TestimonialCard from '@/components/TestimonialCard.vue'
-import { Award, BicepsFlexed, Briefcase, Building2, Calendar, ChevronDown, FolderOpen, GraduationCap, LoaderPinwheel, Mail, PawPrint, Phone } from 'lucide-vue-next'
+import { Award, BicepsFlexed, Briefcase, Building2, Calendar, ChevronDown, Download, FolderOpen, GraduationCap, LoaderPinwheel, Mail, PawPrint, Phone } from 'lucide-vue-next'
 import { Form } from '@inertiajs/vue3'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Toaster } from '@/components/ui/sonner'
-import { contact } from '@/routes'
+import { contact, cvCode, cvDownload, cvRequest } from '@/routes'
 import { products } from '@/data/products'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { toast } from 'vue-sonner'
@@ -62,6 +63,7 @@ interface Education {
 }
 
 const props = defineProps<{
+    code?: string | null
     workExperience?: WorkExperience | null
     contactDetails?: ContactDetails | null
     education?: Education | null
@@ -227,10 +229,173 @@ function handleError(): void {
         description: 'Please correct all form errors highlighted in red and try again.',
     })
 }
+
+const cvDialogOpen = ref(false)
+const cvDialogMode = ref<'code' | 'request'>('code')
+const enteredCode = ref('')
+
+const cvDownloadUrl = computed(() => (props.code ? cvDownload.url(props.code) : null))
+
+function openCvDialog(): void {
+    cvDialogMode.value = 'code'
+    cvDialogOpen.value = true
+}
+
+function handleCodeSuccess(): void {
+    const code = props.code ?? enteredCode.value.trim().toLowerCase()
+    cvDialogOpen.value = false
+    toast.success('Code accepted', {
+        description: 'Your download will start in a moment.',
+    })
+    window.location.href = cvDownload.url(code)
+}
+
+function handleRequestSuccess(): void {
+    cvDialogOpen.value = false
+    toast.success('Thank you', {
+        description: 'I have your request and will email you a code shortly.',
+    })
+}
 </script>
 
 <template>
     <Toaster richColors/>
+
+    <Dialog v-if="!code" v-model:open="cvDialogOpen">
+        <DialogContent class="rounded-4xl border-4 border-gray-200 bg-white p-6 sm:max-w-md sm:p-8">
+            <DialogHeader class="text-left">
+                <DialogTitle class="funnel-display text-2xl font-bold text-gray-800">
+                    Download my CV
+                </DialogTitle>
+                <DialogDescription class="text-sm text-gray-600">
+                    My full CV, including detailed work history, is available with an access code.
+                </DialogDescription>
+            </DialogHeader>
+
+            <Form
+                v-if="cvDialogMode === 'code'"
+                :action="cvCode()"
+                method="post"
+                :options="{ preserveScroll: true }"
+                #default="{ errors, processing }"
+                @success="handleCodeSuccess"
+            >
+                <label class="mb-2 block text-sm font-semibold text-gray-700" for="cv-code">
+                    Access code
+                </label>
+                <input
+                    id="cv-code"
+                    v-model="enteredCode"
+                    name="code"
+                    type="text"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    placeholder="Enter your code"
+                    class="w-full rounded-lg border-2 px-4 py-3 text-base transition-colors focus:border-pink-500 focus:outline-none tracking-widest"
+                    :class="errors.code ? 'border-red-200' : 'border-gray-200'"
+                />
+                <div v-if="errors.code" class="mt-1 text-sm text-red-600">
+                    {{ errors.code }}
+                </div>
+
+                <div class="mt-6 flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <button
+                        type="button"
+                        class="text-sm font-semibold text-pink-500 transition-colors hover:text-pink-600"
+                        @click="cvDialogMode = 'request'"
+                    >
+                        No code? Request one
+                    </button>
+
+                    <div class="flex items-center justify-end gap-2">
+                        <LoaderPinwheel v-if="processing" class="h-5 w-5 animate-spin text-pink-500" />
+                        <div class="inline-flex rounded-full gradient-animation p-[2px]" :style="pageGradient">
+                            <button
+                                type="submit"
+                                :disabled="processing"
+                                class="min-w-max rounded-full px-6 py-2.5 text-sm font-bold text-white sm:text-base"
+                            >
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </Form>
+
+            <Form
+                v-else
+                :action="cvRequest()"
+                method="post"
+                :options="{ preserveScroll: true }"
+                #default="{ errors, processing }"
+                resetOnSuccess
+                @success="handleRequestSuccess"
+                @error="handleError"
+            >
+                <p class="mb-4 text-sm text-gray-600">
+                    Leave your name and email and I will send you a code.
+                </p>
+
+                <div class="mb-4">
+                    <label class="mb-2 block text-sm font-semibold text-gray-700" for="cv-request-name">
+                        Name
+                    </label>
+                    <input
+                        id="cv-request-name"
+                        name="name"
+                        type="text"
+                        placeholder="Your name"
+                        class="w-full rounded-lg border-2 px-4 py-3 text-base transition-colors focus:border-pink-500 focus:outline-none"
+                        :class="errors.name ? 'border-red-200' : 'border-gray-200'"
+                    />
+                    <div v-if="errors.name" class="mt-1 text-sm text-red-600">
+                        {{ errors.name }}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-gray-700" for="cv-request-email">
+                        Email
+                    </label>
+                    <input
+                        id="cv-request-email"
+                        name="email"
+                        type="email"
+                        placeholder="your@email.com"
+                        class="w-full rounded-lg border-2 px-4 py-3 text-base transition-colors focus:border-pink-500 focus:outline-none"
+                        :class="errors.email ? 'border-red-200' : 'border-gray-200'"
+                    />
+                    <div v-if="errors.email" class="mt-1 text-sm text-red-600">
+                        {{ errors.email }}
+                    </div>
+                </div>
+
+                <div class="mt-6 flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <button
+                        type="button"
+                        class="text-sm font-semibold text-pink-500 transition-colors hover:text-pink-600"
+                        @click="cvDialogMode = 'code'"
+                    >
+                        I have a code
+                    </button>
+
+                    <div class="flex items-center justify-end gap-2">
+                        <LoaderPinwheel v-if="processing" class="h-5 w-5 animate-spin text-pink-500" />
+                        <div class="inline-flex rounded-full gradient-animation p-[2px]" :style="pageGradient">
+                            <button
+                                type="submit"
+                                :disabled="processing"
+                                class="min-w-max rounded-full px-6 py-2.5 text-sm font-bold text-white sm:text-base"
+                            >
+                                Request a code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </Form>
+        </DialogContent>
+    </Dialog>
 
     <div class="gradient-animation" :style="pageGradient">
         <nav class="fixed top-3 sm:top-6 left-1/2 z-50 -translate-x-1/2 transform rounded-full bg-white/90 px-3 sm:px-8 py-3 sm:py-4 shadow-2xl backdrop-blur-md">
@@ -276,7 +441,7 @@ function handleError(): void {
             </ul>
         </nav>
 
-        <ScreenSection id="home">
+        <ScreenSection id="home" grow>
             <div class="flex flex-col items-center gap-6 text-center sm:gap-8 lg:gap-10">
                 <h1 class="funnel-display text-3xl font-bold text-white sm:text-4xl md:text-5xl lg:text-6xl">
                     iainco
@@ -293,6 +458,24 @@ function handleError(): void {
                 <p class="px-4 mx-auto max-w-xs text-base text-white sm:max-w-sm sm:text-lg md:max-w-md md:text-xl lg:max-w-lg xl:max-w-xl">
                     Scottish full stack developer passionate about crafting modern, efficient applications. These days I build with Claude Code alongside me, which lets me ship faster and reach beyond my core stack without lowering the bar on quality. When I'm not coding, you'll find me spending time with my family, running or watching F1.
                 </p>
+
+                <a
+                    v-if="cvDownloadUrl"
+                    :href="cvDownloadUrl"
+                    class="funnel-display inline-flex items-center gap-2 rounded-full border-4 border-gray-200 bg-white px-5 py-2.5 text-sm font-bold text-gray-800 shadow-2xl transition-colors hover:text-purple-600 sm:px-6 sm:py-3 sm:text-base"
+                >
+                    <Download :size="18" class="text-pink-500" />
+                    Download CV
+                </a>
+                <button
+                    v-else
+                    type="button"
+                    class="funnel-display inline-flex items-center gap-2 rounded-full border-4 border-gray-200 bg-white px-5 py-2.5 text-sm font-bold text-gray-800 shadow-2xl transition-colors hover:text-purple-600 sm:px-6 sm:py-3 sm:text-base"
+                    @click="openCvDialog"
+                >
+                    <Download :size="18" class="text-pink-500" />
+                    Download CV
+                </button>
             </div>
         </ScreenSection>
 
