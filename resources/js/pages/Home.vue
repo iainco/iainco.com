@@ -5,7 +5,7 @@ import ScreenSection from '@/components/ScreenSection.vue'
 import TechIcon from '@/components/TechIcon.vue'
 import TechTag from '@/components/TechTag.vue'
 import TestimonialCard from '@/components/TestimonialCard.vue'
-import { Award, BicepsFlexed, Briefcase, Building2, Calendar, ChevronDown, Compass, FolderOpen, GraduationCap, LoaderPinwheel, Mail, PawPrint, Phone, ShieldCheck, Sparkles } from 'lucide-vue-next'
+import { Award, BicepsFlexed, Briefcase, Building2, Calendar, ChevronDown, FolderOpen, GraduationCap, LoaderPinwheel, Mail, PawPrint, Phone } from 'lucide-vue-next'
 import { Form } from '@inertiajs/vue3'
 import { Toaster } from '@/components/ui/sonner'
 import { contact } from '@/routes'
@@ -144,27 +144,6 @@ const projects = [
     },
 ]
 
-const howIWork = [
-    {
-        icon: Sparkles,
-        iconClasses: ['from-purple-400', 'to-pink-500'],
-        title: 'AI-assisted, human-owned',
-        body: 'I use Claude Code daily on every project: planning features, writing tests, refactoring, and getting up to speed in unfamiliar codebases. The judgement stays with me. I decide the architecture, review every change, and I’m the one who deploys it and answers for it in production.',
-    },
-    {
-        icon: Compass,
-        iconClasses: ['from-orange-400', 'to-red-500'],
-        title: 'Wider reach, honest tiers',
-        body: 'Laravel and Vue are home, and there I can vouch for every line. With AI tooling I can also ship confidently in languages I wouldn’t call myself fluent in, such as Swift. I’ve submitted apps to the App Store and Google Play before, and I’m currently building a native iOS app end to end.',
-    },
-    {
-        icon: ShieldCheck,
-        iconClasses: ['from-green-400', 'to-cyan-500'],
-        title: 'Keeping it honest',
-        body: 'Small reviewed commits, tests before merge, and project conventions written down so the tooling follows them. Faster does not mean sloppier.',
-    },
-]
-
 const testimonials = [
     {
         iconClasses: ['from-purple-400', 'to-pink-500'],
@@ -254,21 +233,21 @@ function handleError(): void {
     <Toaster richColors/>
 
     <div class="gradient-animation" :style="pageGradient">
-        <nav class="fixed top-3 sm:top-6 inset-x-0 z-50 mx-auto w-fit max-w-[calc(100vw-1rem)] rounded-full bg-white/90 px-2.5 sm:px-8 py-3 sm:py-4 shadow-2xl backdrop-blur-md">
-            <ul class="flex flex-wrap justify-center gap-x-2 gap-y-1 sm:gap-x-8 text-[11px] sm:text-sm font-semibold">
+        <nav class="fixed top-3 sm:top-6 left-1/2 z-50 -translate-x-1/2 transform rounded-full bg-white/90 px-3 sm:px-8 py-3 sm:py-4 shadow-2xl backdrop-blur-md">
+            <ul class="flex space-x-3 sm:space-x-8 text-[11px] sm:text-sm font-semibold">
                 <li>
                     <a href="#home" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
                         Home
                     </a>
                 </li>
                 <li>
-                    <a href="#stack" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
-                        Stack
+                    <a href="#products" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
+                        Products
                     </a>
                 </li>
                 <li>
-                    <a href="#ai" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
-                        AI
+                    <a href="#stack" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
+                        Stack
                     </a>
                 </li>
                 <li v-if="workExperience">
@@ -285,11 +264,6 @@ function handleError(): void {
                     </a>
                 </li>
                 <li>
-                    <a href="#products" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
-                        Products
-                    </a>
-                </li>
-                <li>
                     <a href="#testimonials" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
                         Testimonials
                     </a>
@@ -303,7 +277,7 @@ function handleError(): void {
         </nav>
 
         <ScreenSection id="home">
-            <div class="flex flex-col items-center gap-6 pt-12 text-center sm:gap-8 sm:pt-0 lg:gap-10">
+            <div class="flex flex-col items-center gap-6 text-center sm:gap-8 lg:gap-10">
                 <h1 class="funnel-display text-3xl font-bold text-white sm:text-4xl md:text-5xl lg:text-6xl">
                     iainco
                 </h1>
@@ -319,6 +293,42 @@ function handleError(): void {
                 <p class="px-4 mx-auto max-w-xs text-base text-white sm:max-w-sm sm:text-lg md:max-w-md md:text-xl lg:max-w-lg xl:max-w-xl">
                     Scottish full stack developer passionate about crafting modern, efficient applications. These days I build with Claude Code alongside me, which lets me ship faster and reach beyond my core stack without lowering the bar on quality. When I'm not coding, you'll find me spending time with my family, running or watching F1.
                 </p>
+            </div>
+        </ScreenSection>
+
+        <ScreenSection id="products" grow>
+            <h2 class="funnel-display mb-3 sm:mb-4 text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+                Products I've Built
+            </h2>
+
+            <p class="mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl px-4 text-center text-sm text-white/80 sm:text-base md:text-lg">
+                Designed and built by me, end to end. One live, one on the way.
+            </p>
+
+            <div class="mx-auto max-w-sm space-y-6 px-2 sm:max-w-4xl lg:max-w-6xl">
+                <ProductCard
+                    v-for="product in products"
+                    :key="product.name"
+                    :name="product.name"
+                    :tagline="product.tagline"
+                    :description="product.description"
+                    :url="product.url"
+                    :image="product.image"
+                    :status="product.status"
+                    :role="product.role"
+                    :highlights="product.highlights"
+                    :ctaStyle="pageGradient"
+                >
+                    <template #tech-tags>
+                        <TechTag
+                            v-for="tag in product.tech"
+                            :key="tag.name"
+                            :name="tag.name"
+                            :bgColor="tag.bgColor"
+                            :hoverBgColor="tag.hoverBgColor"
+                        />
+                    </template>
+                </ProductCard>
             </div>
         </ScreenSection>
 
@@ -501,8 +511,7 @@ function handleError(): void {
                 <span class="funnel-display text-xs font-semibold uppercase tracking-widest text-white/70">
                     Tools
                 </span>
-                <a
-                    href="#ai"
+                <div
                     class="inline-flex items-center gap-3 rounded-full border-4 border-gray-200 bg-white py-2 pr-5 pl-2"
                 >
                     <span
@@ -518,37 +527,6 @@ function handleError(): void {
                         <span class="funnel-display block text-sm font-bold text-gray-800 sm:text-base">Claude Code</span>
                         <span class="block text-xs text-gray-500">AI pair programmer, used daily</span>
                     </span>
-                </a>
-            </div>
-        </ScreenSection>
-
-        <ScreenSection id="ai" grow>
-            <h2 class="funnel-display mb-3 sm:mb-4 text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-                How I Work
-            </h2>
-
-            <p class="mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl px-4 text-center text-sm text-white/80 sm:text-base md:text-lg">
-                AI is part of how I build now. Here is what that means in practice.
-            </p>
-
-            <div class="mx-auto grid max-w-sm gap-4 px-2 sm:max-w-4xl sm:grid-cols-3 lg:max-w-6xl lg:gap-6">
-                <div
-                    v-for="item in howIWork"
-                    :key="item.title"
-                    class="flex flex-col rounded-4xl border-4 border-gray-200 bg-white p-5 sm:p-6 lg:p-8"
-                >
-                    <div
-                        class="mb-4 flex size-12 items-center justify-center rounded-full bg-gradient-to-br text-white"
-                        :class="item.iconClasses"
-                    >
-                        <component :is="item.icon" :size="24" />
-                    </div>
-                    <h3 class="funnel-display text-lg font-bold text-gray-800 sm:text-xl">
-                        {{ item.title }}
-                    </h3>
-                    <p class="mt-3 text-sm leading-relaxed text-gray-700">
-                        {{ item.body }}
-                    </p>
                 </div>
             </div>
         </ScreenSection>
@@ -743,42 +721,6 @@ function handleError(): void {
                         </div>
                     </div>
                 </div>
-            </div>
-        </ScreenSection>
-
-        <ScreenSection id="products" grow>
-            <h2 class="funnel-display mb-3 sm:mb-4 text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-                Products I've Built
-            </h2>
-
-            <p class="mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl px-4 text-center text-sm text-white/80 sm:text-base md:text-lg">
-                Designed and built by me, end to end. One live, one on the way.
-            </p>
-
-            <div class="mx-auto max-w-sm space-y-6 px-2 sm:max-w-4xl lg:max-w-6xl">
-                <ProductCard
-                    v-for="product in products"
-                    :key="product.name"
-                    :name="product.name"
-                    :tagline="product.tagline"
-                    :description="product.description"
-                    :url="product.url"
-                    :image="product.image"
-                    :status="product.status"
-                    :role="product.role"
-                    :highlights="product.highlights"
-                    :ctaStyle="pageGradient"
-                >
-                    <template #tech-tags>
-                        <TechTag
-                            v-for="tag in product.tech"
-                            :key="tag.name"
-                            :name="tag.name"
-                            :bgColor="tag.bgColor"
-                            :hoverBgColor="tag.hoverBgColor"
-                        />
-                    </template>
-                </ProductCard>
             </div>
         </ScreenSection>
 
