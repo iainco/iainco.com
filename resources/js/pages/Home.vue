@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import ProductCard from '@/components/ProductCard.vue'
-import ProjectCard from '@/components/ProjectCard.vue'
 import ScreenSection from '@/components/ScreenSection.vue'
 import TechIcon from '@/components/TechIcon.vue'
 import TechTag from '@/components/TechTag.vue'
 import TestimonialCard from '@/components/TestimonialCard.vue'
-import { Award, BicepsFlexed, Briefcase, Building2, Calendar, ChevronDown, Download, FolderOpen, GraduationCap, LoaderPinwheel, Mail, PawPrint, Phone } from 'lucide-vue-next'
+import { Award, Building2, Calendar, ChevronDown, Download, FolderOpen, GraduationCap, LoaderPinwheel, Mail, Phone } from 'lucide-vue-next'
 import { Form } from '@inertiajs/vue3'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Toaster } from '@/components/ui/sonner'
@@ -102,50 +101,6 @@ function onWorkExpChevronClick() {
     }
 }
 
-const projects = [
-    {
-        icon: BicepsFlexed,
-        iconClasses: ['from-purple-400', 'to-pink-500'],
-        url: 'https://myfitpro.com',
-        name: 'My Fit Pro',
-        description:
-            'Fully featured live-streaming platform for fitness instructors. Customer onboarding, payment processing, class management, automated server provisioning, realtime events via Pusher, mobile app APIs.',
-        tech: [
-            { name: 'Laravel', bgColor: 'bg-red-600', hoverBgColor: 'hover:bg-red-700' },
-            { name: 'Livewire', bgColor: 'bg-sky-500', hoverBgColor: 'hover:bg-sky-600' },
-            { name: 'Vue', bgColor: 'bg-emerald-500', hoverBgColor: 'hover:bg-emerald-600' },
-            { name: 'Alpine', bgColor: 'bg-blue-700', hoverBgColor: 'hover:bg-blue-800' },
-            { name: 'Tailwind', bgColor: 'bg-cyan-400', hoverBgColor: 'hover:bg-cyan-500' },
-        ],
-    },
-    {
-        icon: PawPrint,
-        iconClasses: ['from-green-400', 'to-cyan-500'],
-        name: 'IDTMobile',
-        description:
-            'Integrated diagnostic tool for vets & farmers. Flutter mobile app with Laravel backend, complex reference data management with API versioning, user authorisation and dashboard.',
-        tech: [
-            { name: 'Laravel', bgColor: 'bg-red-600', hoverBgColor: 'hover:bg-red-700' },
-            { name: 'Livewire', bgColor: 'bg-sky-500', hoverBgColor: 'hover:bg-sky-600' },
-            { name: 'Tailwind', bgColor: 'bg-cyan-400', hoverBgColor: 'hover:bg-cyan-500' },
-            { name: 'Flutter', bgColor: 'bg-blue-500', hoverBgColor: 'hover:bg-blue-600' },
-        ],
-    },
-    {
-        icon: Briefcase,
-        iconClasses: ['from-orange-400', 'to-red-500'],
-        name: 'Workways',
-        description:
-            "Side project that helps freelancers automate billing, invoicing, and project specifications. Integrates FreeAgent's API and Discord to reduce admin time and keep workflows moving.",
-        tech: [
-            { name: 'Laravel', bgColor: 'bg-red-600', hoverBgColor: 'hover:bg-red-700' },
-            { name: 'Inertia', bgColor: 'bg-indigo-600', hoverBgColor: 'hover:bg-indigo-700' },
-            { name: 'React', bgColor: 'bg-sky-400', hoverBgColor: 'hover:bg-sky-500' },
-            { name: 'Tailwind', bgColor: 'bg-cyan-400', hoverBgColor: 'hover:bg-cyan-500' },
-        ],
-    },
-]
-
 const testimonials = [
     {
         iconClasses: ['from-purple-400', 'to-pink-500'],
@@ -170,22 +125,13 @@ const testimonials = [
     },
 ]
 
-const projectIndex = ref(0)
 const testimonialIndex = ref(0)
 const cardsPerView = ref(1)
-const projectMaxIndex = computed(() => Math.max(0, projects.length - cardsPerView.value))
 const testimonialMaxIndex = computed(() => Math.max(0, testimonials.length - cardsPerView.value))
 const slideStyle = computed(() => ({
     flex: `0 0 ${100 / cardsPerView.value}%`,
 }))
-const projectPageCount = computed(() => projectMaxIndex.value + 1)
 const testimonialPageCount = computed(() => testimonialMaxIndex.value + 1)
-
-function setProjectIndex(next: number): void {
-    const max = projectMaxIndex.value
-    const span = max + 1
-    projectIndex.value = ((next % span) + span) % span
-}
 
 function setTestimonialIndex(next: number): void {
     const max = testimonialMaxIndex.value
@@ -214,7 +160,6 @@ onBeforeUnmount(() => {
 })
 
 watch(cardsPerView, () => {
-    projectIndex.value = Math.min(projectIndex.value, projectMaxIndex.value)
     testimonialIndex.value = Math.min(testimonialIndex.value, testimonialMaxIndex.value)
 })
 
@@ -421,11 +366,6 @@ function handleRequestSuccess(): void {
                         class="funnel-display text-gray-700 transition-colors hover:text-purple-600"
                     >
                         Experience
-                    </a>
-                </li>
-                <li>
-                    <a href="#projects" class="funnel-display text-gray-700 transition-colors hover:text-purple-600">
-                        Projects
                     </a>
                 </li>
                 <li>
@@ -845,65 +785,6 @@ function handleRequestSuccess(): void {
                     :class="workExpAtBottom ? 'rotate-180' : ''"
                     @click="onWorkExpChevronClick"
                 />
-            </div>
-        </ScreenSection>
-
-        <ScreenSection id="projects">
-            <h2 class="funnel-display mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-                Featured Projects
-            </h2>
-
-            <div>
-                <div v-if="projectMaxIndex > 0" class="mx-auto mb-6 flex max-w-sm items-center justify-between px-2 text-xs font-semibold text-white/80 sm:max-w-4xl lg:max-w-6xl">
-                    <button class="rounded-full bg-white/15 px-3 py-1" type="button" @click="setProjectIndex(projectIndex - 1)">
-                        Prev
-                    </button>
-                    <div class="flex items-center justify-center gap-2">
-                        <button
-                            v-for="page in projectPageCount"
-                            :key="page"
-                            type="button"
-                            class="h-2 w-2 rounded-full transition"
-                            :class="page - 1 === projectIndex ? 'bg-white' : 'bg-white/40'"
-                            @click="setProjectIndex(page - 1)"
-                        ></button>
-                    </div>
-                    <button class="rounded-full bg-white/15 px-3 py-1" type="button" @click="setProjectIndex(projectIndex + 1)">
-                        Next
-                    </button>
-                </div>
-                <div class="carousel-viewport mx-auto max-w-sm sm:max-w-4xl lg:max-w-6xl">
-                    <div
-                        class="carousel-track"
-                        :class="{ 'justify-center': projectMaxIndex === 0 }"
-                        :style="{ transform: `translateX(-${projectIndex * (100 / cardsPerView)}%)` }"
-                    >
-                        <div
-                            v-for="project in projects"
-                            :key="project.name"
-                            class="carousel-slide"
-                            :style="slideStyle"
-                        >
-                            <ProjectCard
-                                :icon="project.icon"
-                                :iconClasses="project.iconClasses"
-                                :url="project.url"
-                                :name="project.name"
-                                :description="project.description"
-                            >
-                                <template #tech-tags>
-                                    <TechTag
-                                        v-for="tag in project.tech"
-                                        :key="tag.name"
-                                        :name="tag.name"
-                                        :bgColor="tag.bgColor"
-                                        :hoverBgColor="tag.hoverBgColor"
-                                    />
-                                </template>
-                            </ProjectCard>
-                        </div>
-                    </div>
-                </div>
             </div>
         </ScreenSection>
 
